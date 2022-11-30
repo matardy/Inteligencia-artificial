@@ -1,20 +1,21 @@
 package agentes;
 
-import contenedores.Contenedor;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
 import model.Cliente;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
 
 /*
 Estructura de una agente, set up, comportamiento (varios tipos de comportamientos),
 el done() hace que un comportamiento secuencial sea ciclico.
  */
 
-public class AG1 extends Agent { // Para que esta clase sea una agente extiendo, el sniffer es un policia
+public class AG3 extends Agent { // Para que esta clase sea una agente extiendo, el sniffer es un policia
+
 
     /*
     Este metodo es la configuracion inicial del agente. Aqui programo al agente
@@ -23,7 +24,6 @@ public class AG1 extends Agent { // Para que esta clase sea una agente extiendo,
     protected void setup() {
         //System.out.println("Agent name: " + getName());
         //super.setup(); super constructor
-
         addBehaviour(new CompotamientoAgente());
     }
 
@@ -33,43 +33,51 @@ public class AG1 extends Agent { // Para que esta clase sea una agente extiendo,
      */
     @Override
     protected void takeDown() {
-
         System.out.println("Soy "+getName()+ " y he muerto.");
-        Contenedor.crearHijo("AgSon");
-
+        //System.out.println("Soy el agente dos y he muerto");
     }
 
     // Sub clase, del comportamiento del agente y esto lo agrego al set up.
     class CompotamientoAgente extends Behaviour {
 
+        // En action controlo todas las acciones incluidas las del metodo done()
+        // Lo que esta definido es el behavior, pero el agente lo creo y le paso el comportamiento
         @Override
         public void action() {
-//            Mensajes.enviarMSJ("AG2", getAgent(),"Hola Agente dos", null,
-//                    ACLMessage.INFORM,"codAg1-Ag2",false);
             try {
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Mensajes.enviarMSJ(
-                    "AG2",
-                    getAgent(),
-                    null,
-                    new Cliente("Ricardo","Teran", "EPN", "5123123", 55),
-                    ACLMessage.INFORM,
-                    "codAg1-Ag2",
-                    true
+            Mensajes.enviarMSJ("AG2",
+            getAgent(),
+            null,
+            new Cliente("Matardy","Teran", "EPN", "5123123", 55),
+            ACLMessage.REQUEST,
+            "codAg3-Ag2",
+            true
             );
 
+            ACLMessage acl = blockingReceive();
+            if(Objects.equals(acl.getConversationId(), "codAg2-Ag3")){
+
+                System.out.println("--------------------------------");
+                System.out.println("AGENTE: " + getName());
+                System.out.println(acl.getContent());
+                System.out.println("Este mensaje ha sido enviado por: " + acl.getSender().getName());;
+                System.out.println("--------------------------------");
+            }else{
+                System.out.println("Este trafico no deberia estar aqui!");
+            }
 
 
-            // Investigar mensajes ACL, Inform es que envio un mensaje pero no espero respuesta.
-            doDelete(); // doDelete librea el recurso del contenedor
+
+
         }
 
         @Override
         public boolean done() {
-            return true;
+            return false;
             // false es un comportamiento ciclico, de esta forma lo puedo controlar
             // pero si extiendo la clase a CyclicBehaviour y borro el done() ahi es ciclico
             // siempre pero no lo puedo controlar.
