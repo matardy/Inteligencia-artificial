@@ -67,20 +67,14 @@ public class AG3 extends Agent { // Para que esta clase sea una agente extiendo,
                 System.out.println("Este mensaje ha sido enviado por: " + acl.getSender().getName());;
                 System.out.println("--------------------------------");
             }else{
-                System.out.println("Este trafico no deberia estar aqui!");
+                System.out.println("Algo extraño pasó");
             }
-
-
-
-
         }
 
         @Override
         public boolean done() {
             return false;
-            // false es un comportamiento ciclico, de esta forma lo puedo controlar
-            // pero si extiendo la clase a CyclicBehaviour y borro el done() ahi es ciclico
-            // siempre pero no lo puedo controlar.
+
         }
     }
 }

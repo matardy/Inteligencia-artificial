@@ -21,9 +21,7 @@ public class AG1 extends Agent { // Para que esta clase sea una agente extiendo,
      */
     @Override
     protected void setup() {
-        //System.out.println("Agent name: " + getName());
-        //super.setup(); super constructor
-
+        // Añado el comportamiento
         addBehaviour(new CompotamientoAgente());
     }
 
@@ -35,6 +33,7 @@ public class AG1 extends Agent { // Para que esta clase sea una agente extiendo,
     protected void takeDown() {
 
         System.out.println("Soy "+getName()+ " y he muerto.");
+        // Muere AG1 y crea un Hijo.
         Contenedor.crearHijo("AgSon");
 
     }
@@ -44,13 +43,13 @@ public class AG1 extends Agent { // Para que esta clase sea una agente extiendo,
 
         @Override
         public void action() {
-//            Mensajes.enviarMSJ("AG2", getAgent(),"Hola Agente dos", null,
-//                    ACLMessage.INFORM,"codAg1-Ag2",false);
+
             try {
                 TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             Mensajes.enviarMSJ(
                     "AG2",
                     getAgent(),
@@ -70,9 +69,7 @@ public class AG1 extends Agent { // Para que esta clase sea una agente extiendo,
         @Override
         public boolean done() {
             return true;
-            // false es un comportamiento ciclico, de esta forma lo puedo controlar
-            // pero si extiendo la clase a CyclicBehaviour y borro el done() ahi es ciclico
-            // siempre pero no lo puedo controlar.
+
         }
     }
 }

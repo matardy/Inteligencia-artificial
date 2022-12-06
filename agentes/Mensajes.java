@@ -37,7 +37,6 @@ public class Mensajes {
         aid.setLocalName(receptorAlias); //  busca el aid en el contendero en base al alias
         acl.addReceiver(aid);
 
-
         emisor.send(acl);
 
     }

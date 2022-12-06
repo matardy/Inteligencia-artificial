@@ -1,26 +1,26 @@
 package agentes.comportamientos;
 
-import agentes.AgSon;
 import agentes.Mensajes;
-import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
-import jade.domain.persistence.DeleteAgent;
 import jade.lang.acl.ACLMessage;
 import model.Cliente;
-
 import java.util.concurrent.TimeUnit;
 
+/*
+Comportamiento: Agente envia un mensaje a AG2 con id: to-AG2 luego muere.
+ */
 public class C1 extends Behaviour{
-
     @Override
     public void action() {
-//            Mensajes.enviarMSJ("AG2", getAgent(),"Hola Agente dos", null,
-//                    ACLMessage.INFORM,"codAg1-Ag2",false);
+
+        // Espera 3 segundos para ver la ejecución
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        // Envio de mensaje
         Mensajes.enviarMSJ(
                 "AG2",
                 getAgent(),
@@ -31,16 +31,18 @@ public class C1 extends Behaviour{
                 true
         );
 
+        // Libero recursos del contenedor = Mato al agente
         this.getAgent().doDelete();
-        // Investigar mensajes ACL, Inform es que envio un mensaje pero no espero respuesta.
-        //doDelete(); // doDelete librea el recurso del contenedor
+
     }
 
     @Override
     public boolean done() {
-        return true;
-        // false es un comportamiento ciclico, de esta forma lo puedo controlar
-        // pero si extiendo la clase a CyclicBehaviour y borro el done() ahi es ciclico
+        return false;
+        // Con un SimpleBehavior tengo el metodo done() en donde si:
+            // False es un comportamiento ciclico.
+            // True es un comportamiento lineal
+        // Pero si extiendo la clase a CyclicBehaviour y borro el done() ahi es ciclico
         // siempre pero no lo puedo controlar.
     }
 

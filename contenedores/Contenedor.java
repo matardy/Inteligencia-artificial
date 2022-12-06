@@ -11,13 +11,11 @@ import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
 public class Contenedor {
-    private static int sonNumber = 0;
-    private static ContainerController agentContainer; // Debo convertir el agentContainer en static
-    // para poder modificarlo sin declarar un objeto
-    //private AgentContainer agentContainer;
+    private static int sonNumber = 0; // Los hijos se van creando en el contenedor, es por eso que aqui los cuento
+    private static ContainerController agentContainer; // Declaro la variable agentContainer como static para poder modificarla desde otras clases
+
 
     public void crearContenedor(){
-
         jade.core.Runtime runtime = jade.core.Runtime.instance(); // Esto es un proceso como tal para el contenedor
         Profile profile = new ProfileImpl(null, 1099, null); // null : escoge aleatorio
         runtime.createMainContainer(profile);
@@ -27,6 +25,9 @@ public class Contenedor {
     }
     // Crear un behaviour comun para enviar mensaje
     // En el uno le paso el contendero en si mismo
+
+    //Creado una funcion static para no tener que declarar un objeto de la clase.
+    // Para modificar agentContainer esta debe ser static
     public static void crearHijo(String alias){
         sonNumber++;
         try {

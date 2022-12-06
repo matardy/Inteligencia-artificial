@@ -21,8 +21,7 @@ public class AG2 extends Agent { // Para que esta clase sea una agente extiendo,
      */
     @Override
     protected void setup() {
-        //System.out.println("Agent name: " + getName());
-        //super.setup(); super constructor
+
         addBehaviour(new CompotamientoAgente());
     }
 
@@ -34,7 +33,6 @@ public class AG2 extends Agent { // Para que esta clase sea una agente extiendo,
     protected void takeDown() {
 
         System.out.println("Soy "+getName()+ " y he muerto.");
-
 
     }
 
@@ -51,7 +49,8 @@ public class AG2 extends Agent { // Para que esta clase sea una agente extiendo,
             // Condicional que diga que si recibo trrafico de 3 le responde
 
 
-
+            // Controlo de donde recibo mensajes para poder imprimirlo.
+            // Esto lo hago con el conversationID
             if(Objects.equals(acl.getConversationId(), "codAg3-Ag2")){
                 try {
                     TimeUnit.SECONDS.sleep(3);
@@ -69,10 +68,8 @@ public class AG2 extends Agent { // Para que esta clase sea una agente extiendo,
 
             }else{
                 if(Objects.equals(acl.getConversationId(), "to-AG2")){
-                    try {
-
-
-
+                    // TODO Esto se podria refactorizar creando un metodo que detecte diferentes converstionID
+                    try{
                         Cliente c = (Cliente) acl.getContentObject();
 
                         System.out.println("--------------------------------");
@@ -87,9 +84,7 @@ public class AG2 extends Agent { // Para que esta clase sea una agente extiendo,
                     }
                 }
                 if(Objects.equals(acl.getConversationId(), "codAg1-Ag2")){
-
                     try {
-
                         Cliente c = (Cliente) acl.getContentObject();
 
                         System.out.println("--------------------------------");
@@ -104,21 +99,11 @@ public class AG2 extends Agent { // Para que esta clase sea una agente extiendo,
                 }
 
             }
-
-
-
-
-
-            //doDelete();
-
         }
 
         @Override
         public boolean done() {
             return false;
-            // false es un comportamiento ciclico, de esta forma lo puedo controlar
-            // pero si extiendo la clase a CyclicBehaviour y borro el done() ahi es ciclico
-            // siempre pero no lo puedo controlar.
         }
     }
 }
